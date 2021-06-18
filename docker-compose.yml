@@ -1,0 +1,18 @@
+version: "3"
+services:
+    node-app:
+        ports: 
+            - "${EXPRESS_PORT}:${EXPRESS_PORT}"
+        depends_on:
+            - mongo
+
+    mongo:
+        image: mongo
+        volumes:
+            - mongo-db:/data/db
+
+    redis:
+        image: redis
+
+volumes:
+    mongo-db:
