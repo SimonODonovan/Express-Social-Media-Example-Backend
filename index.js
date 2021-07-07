@@ -1,12 +1,13 @@
-import express from 'express';
-import session from 'express-session';
-import redis from 'redis';
-import connectRedis from 'connect-redis';
-import usersRouter from './routes/usersRouter.js';
-import postsRouter from './routes/postsRouter.js';
-import mongoose from 'mongoose';
-import passport from 'passport';
-import * as strategies from './lib/passportStrategies/passportStrategies.js'
+import express from "express";
+import session from "express-session";
+import redis from "redis";
+import connectRedis from "connect-redis";
+import usersRouter from "./routes/usersRouter.js";
+import postsRouter from "./routes/postsRouter.js";
+import mongoose from "mongoose";
+import passport from "passport";
+import * as strategies from "./lib/passportStrategies/passportStrategies.js";
+import { API_ROUTES } from "./constants/apiRoutes.js";
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to mongo
 const connectWithRetry = () => {
     const mongoUrl = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_IP}:${process.env.MONGO_PORT}/postan?authSource=admin`;
-    console.log("Attempting connection to db.")
+    console.log("Attempting connection to db.");
     mongoose
         .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
         .then(() => console.log("Connected to db successfully."))
@@ -30,11 +31,11 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 // Set up redis store
-const RedisStore = connectRedis(session)
+const RedisStore = connectRedis(session);
 const redisClient = redis.createClient({
     host: process.env.REDIS_URL || "redis",
     port: process.env.REDIS_PORT || 6379
-})
+});
 
 // // Set up express-session
 app.use(session({
@@ -58,10 +59,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Mount routers
-app.use("/api/v1/users", usersRouter);
-app.use("/api/v1/posts", postsRouter);
+app.use(API_ROUTES.USERS, usersRouter);
+app.use(API_ROUTES.POSTS, postsRouter);
 
 const port = process.env.EXPRESS_PORT;
 app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`)
+    console.log(`Listening at http://localhost:${port}`);
 });

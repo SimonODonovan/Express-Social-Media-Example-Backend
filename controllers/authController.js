@@ -1,20 +1,23 @@
-import User from '../models/userModel.js';
+import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import RESPONSE_CODES from '../constants/responseCodes.js';
-import passport from 'passport';
+import RESPONSE_CODES from "../constants/responseCodes.js";
+import passport from "passport";
+import { SUCCESS_MESSAGES } from "../constants/userConstants.js";
 
 /**
- * Attempt to create new session for given user.
+ * Create a new session for given user.
  * Use only on signup & passport.authenticate custom callbacks. 
  * @param {Object} req      - Express request object.
  * @param {Object} user     - Mongo User document.
  * @param {Function} next   - Express next middleware function.
  */
-const initSession = (req, user, next) => {
+const _initSession = (req, user, next) => {
     req.logIn(user, err => {
-        if (err) return next(err)
-    })
-}
+        if (err) {
+            return next(err);
+        }
+    });
+};
 
 /**
  * Create a new user.
@@ -23,7 +26,7 @@ const initSession = (req, user, next) => {
  * @param {Object} req      - Express request object.
  * @param {Object} res      - Express response object.
  * @param {Function} next   - Express next middleware function.
- * @returns {Object}        - Express response object.
+ * @returns {Promise}       - Express response object.
  */
 const signup = async (req, res, next) => {
     const { email, password, username, handle } = req.body;
@@ -35,19 +38,19 @@ const signup = async (req, res, next) => {
             username: username,
             handle: handle
         });
-        initSession(req, newUser, next);
+        _initSession(req, newUser, next);
         const createdResponse = RESPONSE_CODES.SUCCESS.CREATED;
         return res.status(createdResponse.code).json({
             ...createdResponse,
-            message: "Created user successfully."
+            message: SUCCESS_MESSAGES.CREATED_USER
         });
     } catch (e) {
-        res.status(400).json({
-            ...RESPONSE_CODES.CLIENT_ERROR.BAD_REQUEST,
+        return res.status(500).json({
+            ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR,
             message: e.message
         });
     }
-}
+};
 
 /**
  * Log a user in.
@@ -58,19 +61,21 @@ const signup = async (req, res, next) => {
  * @param {Function} next   - Express next middleware function.
  * @returns {Object}        - Express response object.
  */
-const login = async (req, res, next) => {
+const login = (req, res, next) => {
     passport.authenticate(
-        'local',
+        "local",
         (err, user, info) => {
             if (err) {
-                return res.status(info.code).json(info);
+                //  Info not provided on done(err) in passport strategy, define here instead.
+                const serverErrorInfo = RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR;
+                return res.status(serverErrorInfo.code).json(serverErrorInfo);
             }
             if (user) {
-                initSession(req, user, next);
+                _initSession(req, user, next);
             }
             return res.status(info.code).json(info);
         }
     )(req, res, next);
-}
+};
 
-export { signup, login }
+export { signup, login };
