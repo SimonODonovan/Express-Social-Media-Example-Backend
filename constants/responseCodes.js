@@ -5,21 +5,24 @@
 //     - String values shold use camel case e.g. "varValue".
 //         - Except "message" values which should be standard human readable.
 
+const _successStatus = "success";  // do not export
+const _clientErrorStatus = "client error";  // do not export
+const _serverErrorStatus = "server error";  // do not export
 const RESPONSE_CODES = {
     SUCCESS: {
         OK: {
             code: 200,
-            status: "success",
+            status: _successStatus,
             message: "Success."
         },
         CREATED: {
             code: 201,
-            status: "success",
+            status: _successStatus,
             message: "Create successful."
         },
         NO_CONTENT: {
             code: 204,
-            status: "success",
+            status: _successStatus,
             message: "Success, no content."
         }
     },
@@ -27,22 +30,22 @@ const RESPONSE_CODES = {
     CLIENT_ERROR: {
         BAD_REQUEST: {
             code: 400,
-            status: "error",
+            status: _clientErrorStatus,
             message: "Invalid request content."
         },
         UNAUTHORIZED: {
             code: 401,
-            status: "error",
+            status: _clientErrorStatus,
             message: "Unauthorized to perform this action."
         },
         FORBIDDEN: {
             code: 403,
-            status: "error",
+            status: _clientErrorStatus,
             message: "Unable to perform this action."
         },
         NOT_FOUND: {
             code: 404,
-            status: "error",
+            status: _clientErrorStatus,
             message: "Resource not found."
         },
     },
@@ -50,15 +53,15 @@ const RESPONSE_CODES = {
     SERVER_ERROR: {
         INTERNAL_ERROR: {
             code: 500,
-            status: "error",
+            status: _serverErrorStatus,
             message: "Internal server error."
         },
         UNAVAILABLE: {
             code: 503,
-            status: "error",
+            status: _serverErrorStatus,
             message: "Server is unavailable."
         }
     }
-}
+};
 
 export default RESPONSE_CODES;
