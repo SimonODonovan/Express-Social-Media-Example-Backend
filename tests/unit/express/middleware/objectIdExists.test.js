@@ -2,7 +2,7 @@ import { jest, describe, test, expect, afterEach, beforeAll, afterAll } from "@j
 import RESPONSE_CODES from "../../../../constants/responseCodes.js";
 import * as middleware from "../../../../middleware/objectIdExists.js";
 import { mockResponse } from "../../testConstants/generalConstants.js";
-import { objectIdExistsConstants } from "../../../../constants/middlewareConstants.js";
+import { OBJECT_ID_EXISTS_CONSTANTS } from "../../../../constants/middlewareConstants.js";
 import User from "../../../../models/userModel.js";
 import {USER_MODEL_NAME} from "../../../../constants/userConstants.js";
 import {EMAILS, PASSWORDS, USERNAMES, HANDLES} from "../../testConstants/userConstants.js";
@@ -55,7 +55,7 @@ describe("isValidObjectId middleware", () => {
         const res = mockResponse();
         const expectedResponse = {
             ...RESPONSE_CODES.CLIENT_ERROR.BAD_REQUEST,
-            message: objectIdExistsConstants.modelDoesNotExist(modelName)
+            message: OBJECT_ID_EXISTS_CONSTANTS.MODEL_DOES_NOT_EXIST(modelName)
         };
 
         // Mock
@@ -77,7 +77,7 @@ describe("isValidObjectId middleware", () => {
         const res = mockResponse();
         const expectedResponse = {
             ...RESPONSE_CODES.CLIENT_ERROR.BAD_REQUEST,
-            message: objectIdExistsConstants.idDoesNotExistInModel(invalidId, modelName)
+            message: OBJECT_ID_EXISTS_CONSTANTS.ID_DOES_NOT_EXIST_IN_MODEL(invalidId, modelName)
         };
 
         // Mock

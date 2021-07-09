@@ -9,6 +9,7 @@ export const POST_MODEL_NAME = "post";
 export const POST_ID = "postId";
 export const POST_TIMESTAMP_REGEX = /^\w{3},\s\d{2}\s\w{3}\s\d{4}\s(\d{2}(:|\s)){3}GMT$/;
 export const POST_TAG_REGEX = /^#\w{1,24}$/;
+export const POST_CONTENT_FIELDS = {messageContent: "message", fileContent: "files", linkContent: "link"};
 
 export const SUCCESS_MESSAGES = {
     CREATED_POST: "New Post created."

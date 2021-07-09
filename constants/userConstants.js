@@ -6,7 +6,7 @@
 //     - String values shold use camel case e.g. "varValue".
 
 export const USER_MODEL_NAME = "user";
-
+export const USER_ID = "userId";
 export const SUCCESS_MESSAGES = {
     CREATED_USER: "Created user successfully."
 };

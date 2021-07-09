@@ -1,6 +1,6 @@
 import RESPONSE_CODES from "../constants/responseCodes.js";
 import mongoose from "mongoose";
-import { objectIdExistsConstants } from "../constants/middlewareConstants.js";
+import { OBJECT_ID_EXISTS_CONSTANTS } from "../constants/middlewareConstants.js";
 
 /**
  * Verify that a given Object Id is present in a given Model.
@@ -18,7 +18,7 @@ const objectIdExists = async (_, res, next, objectId, modelName) => {
     if (!(existingModels.includes(modelName)))
         return res.status(badQueryResponse.code).json({
             ...badQueryResponse,
-            message: objectIdExistsConstants.modelDoesNotExist(modelName)
+            message: OBJECT_ID_EXISTS_CONSTANTS.MODEL_DOES_NOT_EXIST(modelName)
         });
 
     const model = conn.model(modelName);
@@ -27,7 +27,7 @@ const objectIdExists = async (_, res, next, objectId, modelName) => {
     if (!document)
         return res.status(badQueryResponse.code).json({
             ...badQueryResponse,
-            message: objectIdExistsConstants.idDoesNotExistInModel(objectId, modelName)
+            message: OBJECT_ID_EXISTS_CONSTANTS.ID_DOES_NOT_EXIST_IN_MODEL(objectId, modelName)
         });
 
     return next();

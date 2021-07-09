@@ -1,36 +1,36 @@
 import RESPONSE_CODES from "../constants/responseCodes.js";
-import { hasParamsConstants } from "../constants/middlewareConstants.js";
+import { HAS_BODY_PARAMS_SOME_CONSTANTS } from "../constants/middlewareConstants.js";
 
 /**
- * Check the req Object for presence of all supplied params.
+ * Check the req Object's body for presence of at least one of the supplied keys.
  * @param {Object} req      - Express request object.
  * @param {Object} res      - Express response object.
  * @param {Function} next   - Express next middleware function.
- * @param {[String]} params - Params to check for in req Object.
+ * @param {[String]} params - Params to check for in req Object's body.
  * @returns {Object}        - Express response object.
  */
-const hasParams = (req, res, next, params) => {
+const hasBodyParamsSome = (req, res, next, params) => {
     const badRequestParams = RESPONSE_CODES.CLIENT_ERROR.BAD_REQUEST;
-    if (!req.params)
+    if (!req.body)
         return res.status(badRequestParams.code).json({
             ...badRequestParams,
-            message: hasParamsConstants.noParams
+            message: HAS_BODY_PARAMS_SOME_CONSTANTS.NO_BODY
         });
 
-    const missingParams = [];
+    let paramCount = 0;
     for (const param of params) {
-        const hasParam = Boolean(req.params[param]);
-        if (!hasParam)
-            missingParams.push(param);
+        const hasParam = Boolean(req.body[param]);
+        if (hasParam)
+            paramCount++;
     }
 
-    if (missingParams.length > 0)
+    if (paramCount < 1)
         return res.status(badRequestParams.code).json({
             ...badRequestParams,
-            message: hasParamsConstants.missingParams(missingParams)
+            message: HAS_BODY_PARAMS_SOME_CONSTANTS.MISSING_PARAMS(params)
         });
 
     return next();
 };
 
-export default hasParams;
+export default hasBodyParamsSome;

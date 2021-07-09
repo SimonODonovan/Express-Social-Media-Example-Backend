@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import isURL from "validator/lib/isURL.js";
-import { POST_MODEL_NAME, VALIDATION_MESSAGES } from "../constants/postConstants.js";
+import { POST_MODEL_NAME, VALIDATION_MESSAGES, POST_CONTENT_FIELDS } from "../constants/postConstants.js";
 import { USER_MODEL_NAME } from "../constants/userConstants.js";
 import { areValidRefs, isValidRef } from "./validators/generalModelValidators.js";
 import { postNotEmpty, isUtcTimestamp, timeStampHasValidContent, arrayContentAreUrls, areValidTags } from "./validators/postModelValidators.js";
@@ -26,13 +26,13 @@ const postSchema = new mongoose.Schema({
             }
         ]
     },
-    message: {
+    [POST_CONTENT_FIELDS.messageContent]: {
         type: String,
         validate: [_validatePostNotEmpty, VALIDATION_MESSAGES.NO_POST_CONTENT],
         minLength: [1, VALIDATION_MESSAGES.MESSAGE_TOO_SHORT],
         maxLength: [280, VALIDATION_MESSAGES.MESSAGE_TOO_LONG]
     },
-    files: {
+    [POST_CONTENT_FIELDS.fileContent]: {
         type: [String],
         default: undefined,
         validate: [
@@ -46,7 +46,7 @@ const postSchema = new mongoose.Schema({
             }
         ]
     },
-    link: {
+    [POST_CONTENT_FIELDS.linkContent]: {
         type: String,
         validate: [
             {

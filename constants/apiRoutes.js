@@ -7,4 +7,5 @@
 export const API_ROUTES = {
     USERS: "/api/v1/users",
     POSTS: "/api/v1/posts",
+    LIKES: "/api/v1/likes",
 };

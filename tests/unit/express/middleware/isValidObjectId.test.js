@@ -2,7 +2,7 @@ import { jest, describe, test, expect, afterEach } from "@jest/globals";
 import RESPONSE_CODES from "../../../../constants/responseCodes.js";
 import * as middleware from "../../../../middleware/isValidObjectId.js";
 import { mockResponse } from "../../testConstants/generalConstants.js";
-import { isValidObjectIdConstants } from "../../../../constants/middlewareConstants.js";
+import { IS_VALID_OBJECT_ID_CONSTANTS } from "../../../../constants/middlewareConstants.js";
 import mongoose from "mongoose";
 
 afterEach(() => jest.restoreAllMocks());
@@ -28,7 +28,7 @@ describe("isValidObjectId middleware", () => {
         const res = mockResponse();
         const expectedResponse = {
             ...RESPONSE_CODES.CLIENT_ERROR.BAD_REQUEST,
-            message: isValidObjectIdConstants.invalidObjectId 
+            message: IS_VALID_OBJECT_ID_CONSTANTS.INVALID_OBJECT_ID 
         };
 
         // Mock
