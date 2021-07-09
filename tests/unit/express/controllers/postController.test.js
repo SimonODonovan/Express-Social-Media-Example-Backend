@@ -107,7 +107,6 @@ describe("Post Controller", () => {
 
             // Mock
             const findByIdSpy = jest.spyOn(Post, "findById")
-                .mockImplementation()
                 .mockResolvedValue(postData);
 
             // Test
@@ -125,7 +124,6 @@ describe("Post Controller", () => {
 
             // Mock
             const findByIdSpy = jest.spyOn(Post, "findById")
-                .mockImplementation()
                 .mockResolvedValue(null);
 
             // Test
@@ -166,7 +164,6 @@ describe("Post Controller", () => {
 
             // Mock
             const findByIdAndDeleteSpy = jest.spyOn(Post, "findByIdAndDelete")
-                .mockImplementation()
                 .mockResolvedValue(true);
 
             // Test
@@ -184,7 +181,6 @@ describe("Post Controller", () => {
 
             // Mock
             const findByIdAndDeleteSpy = jest.spyOn(Post, "findByIdAndDelete")
-                .mockImplementation()
                 .mockResolvedValue(false);
 
             // Test
