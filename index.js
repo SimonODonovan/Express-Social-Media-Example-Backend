@@ -4,6 +4,7 @@ import redis from "redis";
 import connectRedis from "connect-redis";
 import usersRouter from "./routes/usersRouter.js";
 import postsRouter from "./routes/postsRouter.js";
+import likesRouter from "./routes/likesRouter.js";
 import mongoose from "mongoose";
 import passport from "passport";
 import * as strategies from "./lib/passportStrategies/passportStrategies.js";
@@ -61,6 +62,7 @@ app.use(passport.session());
 // Mount routers
 app.use(API_ROUTES.USERS, usersRouter);
 app.use(API_ROUTES.POSTS, postsRouter);
+app.use(API_ROUTES.LIKES, likesRouter);
 
 const port = process.env.EXPRESS_PORT;
 app.listen(port, () => {

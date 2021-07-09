@@ -1,6 +1,6 @@
 import RESPONSE_CODES from "../constants/responseCodes.js";
 import mongoose from "mongoose";
-import { isValidObjectIdConstants } from "../constants/middlewareConstants.js";
+import { IS_VALID_OBJECT_ID_CONSTANTS } from "../constants/middlewareConstants.js";
 
 /**
  * Verify that a given value is a valid mongoose Object Id.
@@ -16,7 +16,7 @@ const isValidObjectId = (_, res, next, value) => {
     if(!isValidPostId)
         return res.status(badQueryResponse.code).json({ 
             ...badQueryResponse, 
-            message: isValidObjectIdConstants.invalidObjectId 
+            message: IS_VALID_OBJECT_ID_CONSTANTS.INVALID_OBJECT_ID 
         });
 
     return next();

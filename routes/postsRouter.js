@@ -1,7 +1,8 @@
 import express from "express";
-import { POST_ID, POST_MODEL_NAME } from "../constants/postConstants.js";
+import { POST_ID, POST_MODEL_NAME, POST_CONTENT_FIELDS } from "../constants/postConstants.js";
 import * as postController from "../controllers/postController.js";
-import hasParams from "../middleware/hasParams.js";
+import hasRouteParamsAll from "../middleware/hasRouteParamsAll.js";
+import hasBodyParamsSome from "../middleware/hasBodyParamsSome.js";
 import isAuthenticated from "../middleware/isAuthenticated.js";
 import isValidObjectId from "../middleware/isValidObjectId.js";
 import objectIdExists from "../middleware/objectIdExists.js";
@@ -11,9 +12,17 @@ const ROUTES = {
     WITH_POST_ID: `/:${POST_ID}`
 };
 
+// Define [String] to be used with hasBodyParamsSome middleware.
+const postContentRequirements = [
+    POST_CONTENT_FIELDS.messageContent,
+    POST_CONTENT_FIELDS.linkContent,
+    POST_CONTENT_FIELDS.fileContent
+];
+
 // Define Post route middleware params.
 const mw = {
-    hasPostIdParam: (req, res, next) => hasParams(req, res, next, [POST_ID]),
+    hasPostIdParam: (req, res, next) => hasRouteParamsAll(req, res, next, [POST_ID]),
+    hasPostContent: (req, res, next) => hasBodyParamsSome(req, res, next, postContentRequirements),
     isValidPostId: (req, res, next) => isValidObjectId(req, res, next, req.params[POST_ID]),
     postExists: (req, res, next) => objectIdExists(req, res, next, req.params[POST_ID], POST_MODEL_NAME)
 };
@@ -26,12 +35,12 @@ postsRouter
 
 postsRouter
     .route(ROUTES.BASE)
-    .post(postController.createPost);
+    .post(mw.hasPostContent, postController.createPost);
 
 postsRouter
     .route(ROUTES.WITH_POST_ID)
     .get(postController.getPostById)
-    .delete(isAuthenticated, mw.hasPostIdParam, postController.deletePostById);
+    .delete(isAuthenticated, postController.deletePostById);
 
 export default postsRouter;
 export { ROUTES };
