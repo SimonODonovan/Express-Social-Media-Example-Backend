@@ -5,9 +5,7 @@ import mongoose from "mongoose";
 import { SUCCESS_MESSAGES } from "../../../../constants/likeConstants.js";
 import * as likeController from "../../../../controllers/likeController.js";
 import { mockResponse } from "../../testConstants/generalConstants.js";
-import { POST_ID } from "../../../../constants/postConstants.js";
-import { USER_ID } from "../../../../constants/userConstants.js";
-import { LIKE_ID } from "../../../../constants/likeConstants.js";
+import { LIKE_ID, LIKE_MODEL_FIELDS } from "../../../../constants/likeConstants.js";
 
 afterEach(() => jest.restoreAllMocks());
 
@@ -18,8 +16,8 @@ describe("Like Controller", () => {
             // Var
             const req = {
                 body: {
-                    [POST_ID]: mongoose.Types.ObjectId(),
-                    [USER_ID]: mongoose.Types.ObjectId()
+                    [LIKE_MODEL_FIELDS.POST]: mongoose.Types.ObjectId(),
+                    [LIKE_MODEL_FIELDS.USER]: mongoose.Types.ObjectId()
                 }
             };
             const res = mockResponse();
@@ -42,8 +40,8 @@ describe("Like Controller", () => {
             // Var
             const req = {
                 body: {
-                    [POST_ID]: mongoose.Types.ObjectId(),
-                    [USER_ID]: mongoose.Types.ObjectId()
+                    [LIKE_MODEL_FIELDS.POST]: mongoose.Types.ObjectId(),
+                    [LIKE_MODEL_FIELDS.USER]: mongoose.Types.ObjectId()
                 }
             };
             const res = mockResponse();
@@ -71,8 +69,8 @@ describe("Like Controller", () => {
             // Var
             const req = {
                 body: {
-                    [POST_ID]: mongoose.Types.ObjectId(),
-                    [USER_ID]: mongoose.Types.ObjectId()
+                    [LIKE_MODEL_FIELDS.POST]: mongoose.Types.ObjectId(),
+                    [LIKE_MODEL_FIELDS.USER]: mongoose.Types.ObjectId()
                 }
             };
             const res = mockResponse();
@@ -119,8 +117,8 @@ describe("Like Controller", () => {
             const errorMessage = "Error message";
             const req = {
                 body: {
-                    [POST_ID]: mongoose.Types.ObjectId(),
-                    [USER_ID]: mongoose.Types.ObjectId()
+                    [LIKE_MODEL_FIELDS.POST]: mongoose.Types.ObjectId(),
+                    [LIKE_MODEL_FIELDS.USER]: mongoose.Types.ObjectId()
                 }
             };
             const res = mockResponse();
@@ -145,11 +143,7 @@ describe("Like Controller", () => {
     describe("getLikeById", () => {
         test("Returns 200 and like data successful query", async () => {
             // Var
-            const req = {
-                params: {
-                    [LIKE_ID]: mongoose.Types.ObjectId(),
-                }
-            };
+            const req = {params: {[LIKE_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedData = { key: "val" };
             const expectedRes = {
@@ -171,11 +165,7 @@ describe("Like Controller", () => {
 
         test("Returns 404 if like does not exist", async () => {
             // Var
-            const req = {
-                params: {
-                    [LIKE_ID]: mongoose.Types.ObjectId(),
-                }
-            };
+            const req = {params: {[LIKE_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND;
 
@@ -194,11 +184,7 @@ describe("Like Controller", () => {
         test("Returns 500 if exception occurs", async () => {
             // Var
             const errorMessage = "Error message";
-            const req = {
-                params: {
-                    [LIKE_ID]: mongoose.Types.ObjectId(),
-                }
-            };
+            const req = {params: {[LIKE_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = {
                 ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR,
@@ -221,11 +207,7 @@ describe("Like Controller", () => {
     describe("deleteLikeById", () => {
         test("Returns 204 on successful delete", async () => {
             // Var
-            const req = {
-                params: {
-                    [LIKE_ID]: mongoose.Types.ObjectId(),
-                }
-            };
+            const req = {params: {[LIKE_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.SUCCESS.NO_CONTENT;
 
@@ -243,11 +225,7 @@ describe("Like Controller", () => {
 
         test("Returns 404 if like does not exist", async () => {
             // Var
-            const req = {
-                params: {
-                    [LIKE_ID]: mongoose.Types.ObjectId(),
-                }
-            };
+            const req = {params: {[LIKE_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND;
 

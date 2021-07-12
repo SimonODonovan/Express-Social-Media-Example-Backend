@@ -4,6 +4,7 @@ import { EMAILS, HANDLES, PASSWORDS, USERNAMES } from "../../../testConstants/us
 import User from "../../../../../models/userModel.js";
 import bcrypt from "bcrypt";
 import * as authController from "../../../../../controllers/authController.js";
+import { USER_MODEL_FIELDS } from "../../../../../constants/userConstants.js";
 
 /**
  * These tests relate to AuthController but test the private
@@ -15,13 +16,13 @@ import * as authController from "../../../../../controllers/authController.js";
 describe("_initSession", () => {
     test("Does not call error callback if login succeeds", async () => {
         // Var
-        const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
+        const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
         const req = {
             body: {
-                email: EMAILS.VALID_EMAIL,
-                password: PASSWORDS.VALID_PASSWORD,
-                username: USERNAMES.VALID_USERNAME_ALPHANUM,
-                handle: HANDLES.VALID_HANDLE,
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+                [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+                [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE,
             },
             logIn: (user, callback) => callback(undefined)
         };
@@ -39,14 +40,14 @@ describe("_initSession", () => {
 
     test("Passes error to next function on session create failure", async () => {
         // Var
-        const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
+        const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
         const error = new Error("Error message");
         const req = {
             body: {
-                email: EMAILS.VALID_EMAIL,
-                password: PASSWORDS.VALID_PASSWORD,
-                username: USERNAMES.VALID_USERNAME_ALPHANUM,
-                handle: HANDLES.VALID_HANDLE,
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+                [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+                [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE,
             },
             logIn: (user, callback) => callback(error)
         };

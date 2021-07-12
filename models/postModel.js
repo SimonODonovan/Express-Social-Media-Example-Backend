@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 import isURL from "validator/lib/isURL.js";
-import { POST_MODEL_NAME, VALIDATION_MESSAGES, POST_CONTENT_FIELDS } from "../constants/postConstants.js";
+import { POST_MODEL_NAME, VALIDATION_MESSAGES, POST_MODEL_FIELDS } from "../constants/postConstants.js";
 import { USER_MODEL_NAME } from "../constants/userConstants.js";
 import { areValidRefs, isValidRef } from "./validators/generalModelValidators.js";
 import { postNotEmpty, isUtcTimestamp, timeStampHasValidContent, arrayContentAreUrls, areValidTags } from "./validators/postModelValidators.js";
 
 const postSchema = new mongoose.Schema({
-    user: {
+    [POST_MODEL_FIELDS.USER]: {
         type: mongoose.Schema.Types.ObjectId,
         ref: USER_MODEL_NAME,
         required: [true, VALIDATION_MESSAGES.USER_REQUIRED],
         validate: [(value) => isValidRef(USER_MODEL_NAME, value), VALIDATION_MESSAGES.USER_NOT_EXIST]
     },
-    timestamp: {
+    [POST_MODEL_FIELDS.TIMESTAMP]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.TIMESTAMP_REQUIRED],
         validate: [
@@ -26,13 +26,13 @@ const postSchema = new mongoose.Schema({
             }
         ]
     },
-    [POST_CONTENT_FIELDS.messageContent]: {
+    [POST_MODEL_FIELDS.MESSAGE]: {
         type: String,
         validate: [_validatePostNotEmpty, VALIDATION_MESSAGES.NO_POST_CONTENT],
         minLength: [1, VALIDATION_MESSAGES.MESSAGE_TOO_SHORT],
         maxLength: [280, VALIDATION_MESSAGES.MESSAGE_TOO_LONG]
     },
-    [POST_CONTENT_FIELDS.fileContent]: {
+    [POST_MODEL_FIELDS.FILES]: {
         type: [String],
         default: undefined,
         validate: [
@@ -46,7 +46,7 @@ const postSchema = new mongoose.Schema({
             }
         ]
     },
-    [POST_CONTENT_FIELDS.linkContent]: {
+    [POST_MODEL_FIELDS.LINK]: {
         type: String,
         validate: [
             {
@@ -59,22 +59,22 @@ const postSchema = new mongoose.Schema({
             }
         ],
     },
-    repost: {
+    [POST_MODEL_FIELDS.REPOST]: {
         type: mongoose.Schema.Types.ObjectId,
         ref: POST_MODEL_NAME,
         validate: [(value) => isValidRef(POST_MODEL_NAME, value), VALIDATION_MESSAGES.POST_NOT_EXIST]
     },
-    replyTo: {
+    [POST_MODEL_FIELDS.REPLY_TO]: {
         type: mongoose.Schema.Types.ObjectId,
         ref: POST_MODEL_NAME,
         validate: [(value) => isValidRef(POST_MODEL_NAME, value), VALIDATION_MESSAGES.POST_NOT_EXIST]
     },
-    mentions: {
+    [POST_MODEL_FIELDS.MENTIONS]: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: USER_MODEL_NAME }],
         default: undefined,
         validate: [(value) => areValidRefs(USER_MODEL_NAME, value), VALIDATION_MESSAGES.USER_NOT_EXIST]
     },
-    tags: {
+    [POST_MODEL_FIELDS.TAGS]: {
         type: [String],
         default: undefined,
         minLength: [1, VALIDATION_MESSAGES.TAG_TOO_SHORT],

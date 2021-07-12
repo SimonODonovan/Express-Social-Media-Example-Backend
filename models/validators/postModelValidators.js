@@ -1,4 +1,4 @@
-import { POST_TAG_REGEX, POST_TIMESTAMP_REGEX } from "../../constants/postConstants.js";
+import { POST_TAG_REGEX, POST_TIMESTAMP_REGEX, POST_MODEL_FIELDS } from "../../constants/postConstants.js";
 import isURL from "validator/lib/isURL.js";
 import isString from "../../helpers/isString.js";
 
@@ -9,9 +9,9 @@ import isString from "../../helpers/isString.js";
  */
 const postNotEmpty = (model) => {
     return (
-        Boolean(model.message) ||
-        Boolean(model.files) ||
-        Boolean(model.link)
+        Boolean(model[POST_MODEL_FIELDS.MESSAGE]) ||
+        Boolean(model[POST_MODEL_FIELDS.FILES]) ||
+        Boolean(model[POST_MODEL_FIELDS.LINK])
     );
 };
 

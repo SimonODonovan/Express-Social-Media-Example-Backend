@@ -2,7 +2,7 @@ import { beforeAll, afterEach, afterAll, describe, test, expect } from "@jest/gl
 import { connectToMongoMemoryServer, closeMemoryServerDatabase, clearMemoryServerDatabase } from "../server/memoryServer.js";
 import User from "../../../../models/userModel.js";
 import { EMAILS, PASSWORDS, USERNAMES, HANDLES } from "../../testConstants/userConstants.js";
-import { VALIDATION_MESSAGES } from "../../../../constants/userConstants.js";
+import { VALIDATION_MESSAGES, USER_MODEL_FIELDS } from "../../../../constants/userConstants.js";
 
 beforeAll(() => connectToMongoMemoryServer());
 afterEach(() => clearMemoryServerDatabase());
@@ -12,10 +12,10 @@ describe("User Model", () => {
     test("Create user", async () => {
         // Var
         const validUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -32,9 +32,9 @@ describe("User Model", () => {
     test("Fail on missing email", async () => {
         // Var
         const invalidUser = {
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -46,9 +46,9 @@ describe("User Model", () => {
     test("Fail on missing password", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -60,9 +60,9 @@ describe("User Model", () => {
     test("Fail on missing username", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -74,9 +74,9 @@ describe("User Model", () => {
     test("Fail on missing handle", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
         };
 
         // Test
@@ -88,10 +88,10 @@ describe("User Model", () => {
     test("Fail when username less than min characters", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.INVALID_USERNAME_TOO_SHORT,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.INVALID_USERNAME_TOO_SHORT,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -103,10 +103,10 @@ describe("User Model", () => {
     test("Fail when username greater than max characters", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.INVALID_USERNAME_TOO_LONG,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.INVALID_USERNAME_TOO_LONG,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -118,10 +118,10 @@ describe("User Model", () => {
     test("Fail when handle less than min characters", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.INVALID_HANDLE_TOO_SHORT
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.INVALID_HANDLE_TOO_SHORT
         };
 
         // Test
@@ -133,10 +133,10 @@ describe("User Model", () => {
     test("Fail when handle greater than max characters", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.INVALID_HANDLE_TOO_LONG
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.INVALID_HANDLE_TOO_LONG
         };
 
         // Test
@@ -148,10 +148,10 @@ describe("User Model", () => {
     test("Fail with an invalid email no @", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.INVALID_EMAIL_NO_AT,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.INVALID_EMAIL_NO_AT,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -163,10 +163,10 @@ describe("User Model", () => {
     test("Fail with an invalid email no sub-domain", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.INVALID_EMAIL_NO_DOMAIN,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.INVALID_EMAIL_NO_DOMAIN,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -178,10 +178,10 @@ describe("User Model", () => {
     test("Fail with an invalid email no top-domain", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.INVALID_EMAIL_NO_TOP_DOMAIN,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.INVALID_EMAIL_NO_TOP_DOMAIN,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
 
         // Test
@@ -193,14 +193,14 @@ describe("User Model", () => {
     test("Fail when email is in-use", async () => {
         // Var
         const validUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
         const userSameEmail = {
             ...validUser,
-            handle: HANDLES.VALID_HANDLE_ALT
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE_ALT
         };
 
         // Test
@@ -213,14 +213,14 @@ describe("User Model", () => {
     test("Fail when handle is in-use", async () => {
         // Var
         const validUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
         };
         const userSameHandle = {
             ...validUser,
-            email: EMAILS.VALID_EMAIL_ALT
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL_ALT
         };
 
         // Test
@@ -233,10 +233,10 @@ describe("User Model", () => {
     test("Fail when handle has whitespace", async () => {
         // Var
         const invalidUser = {
-            email: EMAILS.VALID_EMAIL,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.INVALID_HANDLE_INNER_WHITESPACE
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.INVALID_HANDLE_INNER_WHITESPACE
         };
 
         // Test
@@ -249,8 +249,8 @@ describe("User Model", () => {
         // Var
         const nonEnglishHandles = HANDLES.VALID_HANDLE_NON_ENGLISH;
         const invalidUser = {
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM
         };
         let index = 0;
 

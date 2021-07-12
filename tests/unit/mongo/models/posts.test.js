@@ -4,8 +4,8 @@ import User from "../../../../models/userModel.js";
 import Post from "../../../../models/postModel.js";
 import { TIMESTAMPS, MESSAGES, FILES, LINKS, TAGS } from "../../testConstants/postConstants.js";
 import { EMAILS, PASSWORDS, USERNAMES, HANDLES } from "../../testConstants/userConstants.js";
-import { VALIDATION_MESSAGES, POST_CONTENT_FIELDS } from "../../../../constants/postConstants.js";
-import { USER_MODEL_NAME } from "../../../../constants/userConstants.js";
+import { VALIDATION_MESSAGES, POST_MODEL_FIELDS } from "../../../../constants/postConstants.js";
+import { USER_MODEL_NAME, USER_MODEL_FIELDS } from "../../../../constants/userConstants.js";
 
 beforeAll(() => setup());
 afterEach(() => cleanupPostCollection());
@@ -19,10 +19,10 @@ let testUser;
 const setup = async () => {
     await connectToMongoMemoryServer();
     testUser = await User.create({
-        email: EMAILS.VALID_EMAIL,
-        password: PASSWORDS.VALID_PASSWORD,
-        username: USERNAMES.VALID_USERNAME_ALPHANUM,
-        handle: HANDLES.VALID_HANDLE
+        [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+        [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+        [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+        [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
     });
 };
 
@@ -47,9 +47,9 @@ describe("Post Model", () => {
     test("Create post with message", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE
         };
 
         // Test
@@ -67,9 +67,9 @@ describe("Post Model", () => {
         // Var
         const unsavedUser = new User();
         const invalidPost = {
-            user: unsavedUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE
+            [POST_MODEL_FIELDS.USER]: unsavedUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE
         };
 
         // Test
@@ -81,9 +81,9 @@ describe("Post Model", () => {
     test("Fails with invalid timestamp type", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.INVALID_TIMESTAMP_IS_NUMBER,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.INVALID_TIMESTAMP_IS_NUMBER,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
         };
 
         // Test
@@ -95,9 +95,9 @@ describe("Post Model", () => {
     test("Fails with invalid timestamp format", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.INVALID_TIMESTAMP_FORMAT,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.INVALID_TIMESTAMP_FORMAT,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
         };
 
         // Test
@@ -109,9 +109,9 @@ describe("Post Model", () => {
     test("Fails with invalid timestamp content", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.INVALID_TIMESTAMP_CONTENT,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.INVALID_TIMESTAMP_CONTENT,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
         };
 
         // Test
@@ -123,10 +123,10 @@ describe("Post Model", () => {
     test("Fails when message is empty", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.INVALID_MESSAGE_EMPTY,
-            [POST_CONTENT_FIELDS.linkContent]:LINKS.VALID_LINK
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.INVALID_MESSAGE_EMPTY,
+            [POST_MODEL_FIELDS.LINK]:LINKS.VALID_LINK
         };
 
         // Test
@@ -138,9 +138,9 @@ describe("Post Model", () => {
     test("Fails when message is too long", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.INVALID_MESSAGE_TOO_LONG,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.INVALID_MESSAGE_TOO_LONG,
         };
 
         // Test
@@ -152,9 +152,9 @@ describe("Post Model", () => {
     test("Create post with files", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.fileContent]:FILES.VALID_FILES
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.FILES]:FILES.VALID_FILES
         };
 
         // Test
@@ -171,9 +171,9 @@ describe("Post Model", () => {
     test("Fails when files not an array", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.fileContent]:FILES.INVALID_FILES_NOT_STRINGS
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.FILES]:FILES.INVALID_FILES_NOT_STRINGS
         };
 
         // Test
@@ -185,9 +185,9 @@ describe("Post Model", () => {
     test("Fails when files contain invalid URL", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.fileContent]:FILES.INVALID_FILES_NOT_URL
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.FILES]:FILES.INVALID_FILES_NOT_URL
         };
 
         // Test
@@ -199,9 +199,9 @@ describe("Post Model", () => {
     test("Create post with links", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.linkContent]:LINKS.VALID_LINK
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.LINK]:LINKS.VALID_LINK
         };
 
         // Test
@@ -218,9 +218,9 @@ describe("Post Model", () => {
     test("Fails when links contains invalid URL", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.linkContent]:LINKS.INVALID_LINK_NO_TOP_DOMAIN
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.LINK]:LINKS.INVALID_LINK_NO_TOP_DOMAIN
         };
 
         // Test
@@ -232,9 +232,9 @@ describe("Post Model", () => {
     test("Fails when links contains invalid type", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.linkContent]:LINKS.INVALID_LINK_IS_NUMBER
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.LINK]:LINKS.INVALID_LINK_IS_NUMBER
         };
 
         // Test
@@ -246,21 +246,21 @@ describe("Post Model", () => {
     test("Create Post with repost", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
         };
         const referencePost = await Post.create(validPost);
         const validPostWithRepost = {
             ...validPost,
-            repost: referencePost._id
+            [POST_MODEL_FIELDS.REPOST]: referencePost._id
         };
 
         // Test
         await Post.create(validPostWithRepost);
         const allPosts = await Post.find({})
-            .populate(USER_MODEL_NAME)
-            .populate("repost");
+            .populate(POST_MODEL_FIELDS.USER)
+            .populate(POST_MODEL_FIELDS.REPOST);
         expect(allPosts.length).toEqual(2);
         const foundPost = allPosts[1];
         expect(foundPost.user._id).toEqual(testUser._id);
@@ -275,10 +275,10 @@ describe("Post Model", () => {
         // Var
         const unsavedPost = new Post();
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            repost: unsavedPost._id
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.REPOST]: unsavedPost._id
         };
 
         // Test
@@ -290,21 +290,21 @@ describe("Post Model", () => {
     test("Create Post with replyTo", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
         };
         const referencePost = await Post.create(validPost);
         const validPostWithRepost = {
             ...validPost,
-            replyTo: referencePost._id
+            [POST_MODEL_FIELDS.REPLY_TO]: referencePost._id
         };
 
         // Test
         await Post.create(validPostWithRepost);
         const allPosts = await Post.find({})
-            .populate(USER_MODEL_NAME)
-            .populate("replyTo");
+            .populate(POST_MODEL_FIELDS.USER)
+            .populate(POST_MODEL_FIELDS.REPLY_TO);
         expect(allPosts.length).toEqual(2);
         const foundPost = allPosts[1];
         expect(foundPost.user._id).toEqual(testUser._id);
@@ -319,10 +319,10 @@ describe("Post Model", () => {
         // Var
         const unsavedPost = new Post();
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            replyTo: unsavedPost._id
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.REPLY_TO]: unsavedPost._id
         };
 
         // Test
@@ -334,17 +334,17 @@ describe("Post Model", () => {
     test("Create Post with mentions", async () => {
         // Var
         const validUser = {
-            email: EMAILS.VALID_EMAIL_ALT,
-            password: PASSWORDS.VALID_PASSWORD,
-            username: USERNAMES.VALID_USERNAME_ALPHANUM,
-            handle: HANDLES.VALID_HANDLE_ALT
+            [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL_ALT,
+            [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+            [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+            [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE_ALT
         };
         const altTestUser = await User.create(validUser);
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            mentions: [altTestUser._id]
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.MENTIONS]: [altTestUser._id]
         };
 
         // Test
@@ -363,10 +363,10 @@ describe("Post Model", () => {
         // Var
         const unsavedUser = new User();
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            mentions: [unsavedUser._id]
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.MENTIONS]: [unsavedUser._id]
         };
 
         // Test
@@ -378,10 +378,10 @@ describe("Post Model", () => {
     test("Create post with tags", async () => {
         // Var
         const validPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            tags: TAGS.VALID_TAGS
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.TAGS]: TAGS.VALID_TAGS
         };
 
         // Test
@@ -397,10 +397,10 @@ describe("Post Model", () => {
     test("Fails with invalid tags content", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            tags: TAGS.INVALID_TAGS_IS_NUMBER
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.TAGS]: TAGS.INVALID_TAGS_IS_NUMBER
         };
 
         // Test
@@ -412,10 +412,10 @@ describe("Post Model", () => {
     test("Fails with invalid tags type", async () => {
         // Var
         const invalidPost = {
-            user: testUser._id,
-            timestamp: TIMESTAMPS.VALID_TIMESTAMP,
-            [POST_CONTENT_FIELDS.messageContent]:MESSAGES.VALID_MESSAGE,
-            tags: TAGS.INVALID_TAGS_FORMAT
+            [POST_MODEL_FIELDS.USER]: testUser._id,
+            [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP,
+            [POST_MODEL_FIELDS.MESSAGE]:MESSAGES.VALID_MESSAGE,
+            [POST_MODEL_FIELDS.TAGS]: TAGS.INVALID_TAGS_FORMAT
         };
 
         // Test

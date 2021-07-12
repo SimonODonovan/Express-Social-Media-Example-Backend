@@ -1,3 +1,6 @@
+import { USER_MODEL_NAME } from "./userConstants";
+import { POST_MODEL_NAME } from "./postConstants";
+
 // Declaration Conventions:
 //     - All declarations should use const.
 //     - Create Objects for constants with similar categories with plural name. e.g. "export const EMAILS = {};"
@@ -7,6 +10,11 @@
 
 export const LIKE_MODEL_NAME = "like";
 export const LIKE_ID = "likeId";
+
+export const LIKE_MODEL_FIELDS = {
+    USER: USER_MODEL_NAME,
+    POST: POST_MODEL_NAME,
+};
 
 export const SUCCESS_MESSAGES = {
     CREATED_LIKE: "Post liked."

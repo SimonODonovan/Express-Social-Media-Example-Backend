@@ -1,3 +1,5 @@
+import { USER_MODEL_NAME } from "./userConstants";
+
 // Declaration Conventions:
 //     - All declarations should use const.
 //     - Create Objects for constants with similar categories with plural name. e.g. "export const EMAILS = {};"
@@ -5,11 +7,23 @@
 //     - Names should be uppercase with underscore separators e.g. "VAR_NAME".
 //     - String values shold use camel case e.g. "varValue".
 
+
 export const POST_MODEL_NAME = "post";
 export const POST_ID = "postId";
 export const POST_TIMESTAMP_REGEX = /^\w{3},\s\d{2}\s\w{3}\s\d{4}\s(\d{2}(:|\s)){3}GMT$/;
 export const POST_TAG_REGEX = /^#\w{1,24}$/;
-export const POST_CONTENT_FIELDS = {messageContent: "message", fileContent: "files", linkContent: "link"};
+
+export const POST_MODEL_FIELDS = {
+    USER: USER_MODEL_NAME,
+    TIMESTAMP: "timestamp",
+    MESSAGE: "message",
+    FILES: "files",
+    LINK: "link",
+    REPOST: "repost",
+    REPLY_TO: "replyTo",
+    MENTIONS: "mentions",
+    TAGS: "tags"
+};
 
 export const SUCCESS_MESSAGES = {
     CREATED_POST: "New Post created."

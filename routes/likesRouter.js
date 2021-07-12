@@ -1,7 +1,5 @@
 import express from "express";
-import { LIKE_ID, LIKE_MODEL_NAME } from "../constants/likeConstants.js";
-import { POST_ID } from "../constants/postConstants.js";
-import { USER_ID } from "../constants/userConstants.js";
+import { LIKE_ID, LIKE_MODEL_NAME, LIKE_MODEL_FIELDS } from "../constants/likeConstants.js";
 import hasRouteParamsAll from "../middleware/hasRouteParamsAll.js";
 import hasBodyParamsAll from "../middleware/hasBodyParamsAll.js";
 import hasBodyParamsSome from "../middleware/hasBodyParamsSome.js";
@@ -17,11 +15,14 @@ const ROUTES = {
 };
 
 // Define Link route middleware params.
-const hasNoMatchingDocumentFilter = (req) => ({[POST_ID]: req.body[POST_ID], [USER_ID]: req.body[USER_ID]});
+const hasNoMatchingDocumentFilter = (req) => ({
+    [LIKE_MODEL_FIELDS.POST]: req.body[LIKE_MODEL_FIELDS.POST],
+    [LIKE_MODEL_FIELDS.USER]: req.body[LIKE_MODEL_FIELDS.USER]
+});
 const mw = {
     hasLikeIdRouteParam: (req, res, next) => hasRouteParamsAll(req, res, next, [LIKE_ID]),
-    hasRequiredBodyParams: (req, res, next) => hasBodyParamsAll(req, res, next, [POST_ID, USER_ID]),
-    hasLikesFilter: (req, res, next) => hasBodyParamsSome(req, res, next, [POST_ID, USER_ID]),
+    hasRequiredBodyParams: (req, res, next) => hasBodyParamsAll(req, res, next, [LIKE_MODEL_FIELDS.POST, LIKE_MODEL_FIELDS.USER]),
+    hasLikesFilter: (req, res, next) => hasBodyParamsSome(req, res, next, [LIKE_MODEL_FIELDS.POST, LIKE_MODEL_FIELDS.USER]),
     isValidLikeId: (req, res, next) => isValidObjectId(req, res, next, req.params[LIKE_ID]),
     likeExists: (req, res, next) => objectIdExists(req, res, next, req.params[LIKE_ID], LIKE_MODEL_NAME),
     likeDoesntExist: (req, res, next) => hasNoMatchingDocument(req, res, next, LIKE_MODEL_NAME, hasNoMatchingDocumentFilter(req))

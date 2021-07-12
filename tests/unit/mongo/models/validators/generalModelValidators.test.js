@@ -1,6 +1,6 @@
 import { beforeAll, afterAll, describe, test, expect } from "@jest/globals";
 import mongoose from "mongoose";
-import { USER_MODEL_NAME } from "../../../../../constants/userConstants.js";
+import { USER_MODEL_NAME, USER_MODEL_FIELDS } from "../../../../../constants/userConstants.js";
 import User from "../../../../../models/userModel.js";
 import * as generalModelValidators from "../../../../../models/validators/generalModelValidators.js";
 import { EMAILS, PASSWORDS, USERNAMES, HANDLES } from "../../../testConstants/userConstants.js";
@@ -16,10 +16,10 @@ let userObjectId;
 const setup = async () => {
     await connectToMongoMemoryServer();
     const validUser = {
-        email: EMAILS.VALID_EMAIL,
-        password: PASSWORDS.VALID_PASSWORD,
-        username: USERNAMES.VALID_USERNAME_ALPHANUM,
-        handle: HANDLES.VALID_HANDLE
+        [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+        [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+        [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+        [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
     };
     const newUser = await User.create(validUser);
     userObjectId = newUser._id;

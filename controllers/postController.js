@@ -1,6 +1,6 @@
 import Post from "../models/postModel.js";
 import RESPONSE_CODES from "../constants/responseCodes.js";
-import { SUCCESS_MESSAGES, POST_CONTENT_FIELDS, POST_ID } from "../constants/postConstants.js";
+import { SUCCESS_MESSAGES, POST_MODEL_FIELDS, POST_ID } from "../constants/postConstants.js";
 
 /**
  * Create a new post.
@@ -11,10 +11,14 @@ import { SUCCESS_MESSAGES, POST_CONTENT_FIELDS, POST_ID } from "../constants/pos
 const createPost = async (req, res) => {
     try {
         const {
-            [POST_CONTENT_FIELDS.messageContent]: message,
-            [POST_CONTENT_FIELDS.fileContent]: files,
-            [POST_CONTENT_FIELDS.linkContent]: link,
-            repost, replyTo, mentions, tags } = req.body;
+            [POST_MODEL_FIELDS.MESSAGE]: message,
+            [POST_MODEL_FIELDS.FILES]: files,
+            [POST_MODEL_FIELDS.LINK]: link,
+            [POST_MODEL_FIELDS.REPOST]: repost,
+            [POST_MODEL_FIELDS.REPLY_TO]: replyTo,
+            [POST_MODEL_FIELDS.MENTIONS]: mentions,
+            [POST_MODEL_FIELDS.TAGS]: tags
+        } = req.body;
         const timestamp = new Date().toUTCString();
 
         // Object.assign skips null params. 
@@ -53,8 +57,8 @@ const createPost = async (req, res) => {
  * @returns {Promise}   - Express response object. 
  */
 const getPostById = async (req, res) => {
-    const postId = req.params[POST_ID];
     try {
+        const postId = req.params[POST_ID];
         const post = await Post.findById(postId);
         let response;
         if (post) {
@@ -79,8 +83,8 @@ const getPostById = async (req, res) => {
  * @returns {Promise}   - Express response object. 
  */
 const deletePostById = async (req, res) => {
-    const postId = req.params[POST_ID];
     try {
+        const postId = req.params[POST_ID];
         const doc = await Post.findByIdAndDelete(postId);
         let response;
         if (doc) {

@@ -1,5 +1,5 @@
 import express from "express";
-import { POST_ID, POST_MODEL_NAME, POST_CONTENT_FIELDS } from "../constants/postConstants.js";
+import { POST_ID, POST_MODEL_NAME, POST_MODEL_FIELDS } from "../constants/postConstants.js";
 import * as postController from "../controllers/postController.js";
 import hasRouteParamsAll from "../middleware/hasRouteParamsAll.js";
 import hasBodyParamsSome from "../middleware/hasBodyParamsSome.js";
@@ -12,17 +12,10 @@ const ROUTES = {
     WITH_POST_ID: `/:${POST_ID}`
 };
 
-// Define [String] to be used with hasBodyParamsSome middleware.
-const postContentRequirements = [
-    POST_CONTENT_FIELDS.messageContent,
-    POST_CONTENT_FIELDS.linkContent,
-    POST_CONTENT_FIELDS.fileContent
-];
-
 // Define Post route middleware params.
 const mw = {
     hasPostIdParam: (req, res, next) => hasRouteParamsAll(req, res, next, [POST_ID]),
-    hasPostContent: (req, res, next) => hasBodyParamsSome(req, res, next, postContentRequirements),
+    hasPostContent: (req, res, next) => hasBodyParamsSome(req, res, next, [POST_MODEL_FIELDS.MESSAGE, POST_MODEL_FIELDS.FILES, POST_MODEL_FIELDS.LINK]),
     isValidPostId: (req, res, next) => isValidObjectId(req, res, next, req.params[POST_ID]),
     postExists: (req, res, next) => objectIdExists(req, res, next, req.params[POST_ID], POST_MODEL_NAME)
 };

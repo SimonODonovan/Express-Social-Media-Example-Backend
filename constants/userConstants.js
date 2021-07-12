@@ -7,6 +7,17 @@
 
 export const USER_MODEL_NAME = "user";
 export const USER_ID = "userId";
+
+export const USER_MODEL_FIELDS = {
+    EMAIL: "email",
+    PASSWORD: "password",
+    USERNAME: "username",
+    HANDLE: "handle",
+    BIO: "bio",
+    LOCATION: "location",
+    AVATAR: "avatar"
+};
+
 export const SUCCESS_MESSAGES = {
     CREATED_USER: "Created user successfully."
 };
