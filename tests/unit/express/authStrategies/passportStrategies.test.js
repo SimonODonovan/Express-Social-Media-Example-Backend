@@ -3,7 +3,7 @@ import { startServer, stopServer } from "../server/server.js";
 import passport from "passport";
 import User from "../../../../models/userModel.js";
 import RESPONSE_CODES from "../../../../constants/responseCodes.js";
-import { ERROR_MESSAGES } from "../../../../constants/userConstants.js";
+import { ERROR_MESSAGES, USER_MODEL_FIELDS } from "../../../../constants/userConstants.js";
 import bcrypt from "bcrypt";
 import { USERNAMES } from "../../testConstants/userConstants.js";
 import { serializeUser, deserializeUser } from "../../../../lib/passportStrategies/passportStrategies.js";
@@ -66,7 +66,7 @@ describe("Local Strategy", () => {
     });
 
     test("Returns 200 and user model if correct username and password", (done) => {
-        const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
+        const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
         User.findOne = jest.fn().mockResolvedValue(testUser);
         bcrypt.compare = jest.fn().mockResolvedValue(true);
         const authenticateCallback = jest.fn((err, user, info) => {
@@ -100,7 +100,7 @@ describe("Local Strategy", () => {
                 done(err);
             }
         });
-        const req = { body: { email: "email@address.com", password: "password" } };
+        const req = { body: { [USER_MODEL_FIELDS.EMAIL]: "email@address.com", [USER_MODEL_FIELDS.PASSWORD]: "password" } };
         const res = {};
         passport.authenticate("local", authenticateCallback)(req, res, jest.fn());
     });

@@ -1,8 +1,6 @@
 import Like from "../models/likeModel.js";
 import RESPONSE_CODES from "../constants/responseCodes.js";
-import { LIKE_ID, SUCCESS_MESSAGES } from "../constants/likeConstants.js";
-import { POST_ID } from "../constants/postConstants.js";
-import { USER_ID } from "../constants/userConstants.js";
+import { LIKE_ID, SUCCESS_MESSAGES, LIKE_MODEL_FIELDS } from "../constants/likeConstants.js";
 
 /**
  * Create a new like association between user and post.
@@ -13,11 +11,9 @@ import { USER_ID } from "../constants/userConstants.js";
 const createLike = async (req, res) => {
     try {
         const documentContent = {
-            [POST_ID]: req.body[POST_ID],
-            [USER_ID]: req.body[USER_ID]
+            [LIKE_MODEL_FIELDS.POST]: req.body[LIKE_MODEL_FIELDS.POST],
+            [LIKE_MODEL_FIELDS.USER]: req.body[LIKE_MODEL_FIELDS.USER]
         };
-
-        // TODO ensure like relationship doesn't already exist
 
         await Like.create(documentContent);
         const response = RESPONSE_CODES.SUCCESS.CREATED;
@@ -41,15 +37,15 @@ const createLike = async (req, res) => {
  * @returns {Promise}   - Express response object. 
  */
 const getLikes = async (req, res) => {
-    const postId = req.body[POST_ID];
-    const userId = req.body[USER_ID];
+    const postFilter = req.body[LIKE_MODEL_FIELDS.POST];
+    const userFilter = req.body[LIKE_MODEL_FIELDS.USER];
     const queryFilter = {};
 
-    if (postId)
-        queryFilter[POST_ID] = postId;
+    if (postFilter)
+        queryFilter[LIKE_MODEL_FIELDS.POST] = postFilter;
 
-    if (userId)
-        queryFilter[USER_ID] = userId;
+    if (userFilter)
+        queryFilter[LIKE_MODEL_FIELDS.USER] = userFilter;
 
     try {
         const likes = await Like.find(queryFilter);

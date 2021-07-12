@@ -1,12 +1,13 @@
 import { describe, test, expect } from "@jest/globals";
 import * as postModelValidators from "../../../../../models/validators/postModelValidators.js";
 import { FILES, LINKS, MESSAGES, TAGS, TIMESTAMPS } from "../../../testConstants/postConstants.js";
+import { POST_MODEL_FIELDS } from "../../../../../constants/postConstants.js";
 
 describe("Post Model Validators", () => {
     describe("postNotEmpty", () => {
         test("returns true if model has a message", () => {
             // Var
-            const model = { message: MESSAGES.VALID_MESSAGE };
+            const model = { [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.VALID_MESSAGE };
 
             // Test
             const res = postModelValidators.postNotEmpty(model);
@@ -15,7 +16,7 @@ describe("Post Model Validators", () => {
 
         test("returns true if model has files", () => {
             // Var
-            const model = { files: FILES.VALID_FILES };
+            const model = { [POST_MODEL_FIELDS.FILES]: FILES.VALID_FILES };
 
             // Test
             const res = postModelValidators.postNotEmpty(model);
@@ -24,7 +25,7 @@ describe("Post Model Validators", () => {
 
         test("returns true if model has a link", () => {
             // Var
-            const model = { link: LINKS.VALID_LINK };
+            const model = { [POST_MODEL_FIELDS.LINK]: LINKS.VALID_LINK };
 
             // Test
             const res = postModelValidators.postNotEmpty(model);
@@ -91,7 +92,7 @@ describe("Post Model Validators", () => {
 
         test("returns false if timestamp contains invalid content", () => {
             // Var
-            const timestamp = { message: MESSAGES.INVALID_TIMESTAMP_CONTENT };
+            const timestamp = { [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.INVALID_TIMESTAMP_CONTENT };
 
             // Test
             const res = postModelValidators.postNotEmpty(timestamp);
@@ -100,7 +101,7 @@ describe("Post Model Validators", () => {
 
         test("returns false if value is not a timestamp string", () => {
             // Var
-            const timestamp = { message: MESSAGES.INVALID_TIMESTAMP_FORMAT };
+            const timestamp = { [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.INVALID_TIMESTAMP_FORMAT };
 
             // Test
             const res = postModelValidators.postNotEmpty(timestamp);
@@ -109,7 +110,7 @@ describe("Post Model Validators", () => {
 
         test("returns false if value is not a string", () => {
             // Var
-            const timestamp = { message: MESSAGES.INVALID_TIMESTAMP_IS_NUMBER };
+            const timestamp = { [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.INVALID_TIMESTAMP_IS_NUMBER };
 
             // Test
             const res = postModelValidators.postNotEmpty(timestamp);

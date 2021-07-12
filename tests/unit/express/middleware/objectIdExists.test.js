@@ -4,7 +4,7 @@ import * as middleware from "../../../../middleware/objectIdExists.js";
 import { mockResponse } from "../../testConstants/generalConstants.js";
 import { OBJECT_ID_EXISTS_CONSTANTS } from "../../../../constants/middlewareConstants.js";
 import User from "../../../../models/userModel.js";
-import {USER_MODEL_NAME} from "../../../../constants/userConstants.js";
+import {USER_MODEL_NAME, USER_MODEL_FIELDS} from "../../../../constants/userConstants.js";
 import {EMAILS, PASSWORDS, USERNAMES, HANDLES} from "../../testConstants/userConstants.js";
 import {connectToMongoMemoryServer, clearMemoryServerDatabase, closeMemoryServerDatabase} from "../../mongo/server/memoryServer.js";
 import mongoose from "mongoose";
@@ -18,10 +18,10 @@ var testUserId;
 const setup = async () => {
     await connectToMongoMemoryServer();
     const testUser = await User.create({
-        email: EMAILS.VALID_EMAIL,
-        password: PASSWORDS.VALID_PASSWORD,
-        username: USERNAMES.VALID_USERNAME_ALPHANUM,
-        handle: HANDLES.VALID_HANDLE
+        [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+        [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+        [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+        [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
     });
     testUserId = testUser._id;
 };

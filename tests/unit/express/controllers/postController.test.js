@@ -3,7 +3,7 @@ import Post from "../../../../models/postModel.js";
 import RESPONSE_CODES from "../../../../constants/responseCodes.js";
 import mongoose from "mongoose";
 import { FILES, LINKS, MESSAGES, TAGS } from "../../testConstants/postConstants.js";
-import { SUCCESS_MESSAGES } from "../../../../constants/postConstants.js";
+import { SUCCESS_MESSAGES, POST_MODEL_FIELDS, POST_ID } from "../../../../constants/postConstants.js";
 import * as postController from "../../../../controllers/postController.js";
 import { mockResponse } from "../../testConstants/generalConstants.js";
 
@@ -17,19 +17,19 @@ describe("Post Controller", () => {
             const req = {
                 user: { id: mongoose.Types.ObjectId() },
                 body: {
-                    message: MESSAGES.VALID_MESSAGE,
-                    files: FILES.VALID_FILES,
-                    link: LINKS.VALID_LINK,
-                    repost:  mongoose.Types.ObjectId(),
-                    replyTo:  mongoose.Types.ObjectId(),
-                    mentions:  mongoose.Types.ObjectId(),
-                    tags: TAGS.VALID_TAGS,
+                    [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.VALID_MESSAGE,
+                    [POST_MODEL_FIELDS.FILES]: FILES.VALID_FILES,
+                    [POST_MODEL_FIELDS.LINK]: LINKS.VALID_LINK,
+                    [POST_MODEL_FIELDS.REPOST]:  mongoose.Types.ObjectId(),
+                    [POST_MODEL_FIELDS.REPLY_TO]:  mongoose.Types.ObjectId(),
+                    [POST_MODEL_FIELDS.MENTIONS]:  mongoose.Types.ObjectId(),
+                    [POST_MODEL_FIELDS.TAGS]: TAGS.VALID_TAGS,
                 }
             };
             const res = mockResponse();
             const expectedRes = {
                 ...RESPONSE_CODES.SUCCESS.CREATED,
-                message: SUCCESS_MESSAGES.CREATED_POST
+                [POST_MODEL_FIELDS.MESSAGE]: SUCCESS_MESSAGES.CREATED_POST
             };
 
             // Mock
@@ -46,14 +46,12 @@ describe("Post Controller", () => {
             // Var
             const req = {
                 user: { id: mongoose.Types.ObjectId() },
-                body: {
-                    files: FILES.VALID_FILES,
-                }
+                body: {[POST_MODEL_FIELDS.FILES]: FILES.VALID_FILES}
             };
             const res = mockResponse();
             const expectedRes = {
                 ...RESPONSE_CODES.SUCCESS.CREATED,
-                message: SUCCESS_MESSAGES.CREATED_POST
+                [POST_MODEL_FIELDS.MESSAGE]: SUCCESS_MESSAGES.CREATED_POST
             };
 
             // Mock
@@ -70,15 +68,13 @@ describe("Post Controller", () => {
             // Var
             const req = {
                 user: { id: mongoose.Types.ObjectId() },
-                body: {
-                    message: MESSAGES.VALID_MESSAGE
-                }
+                body: {[POST_MODEL_FIELDS.MESSAGE]: MESSAGES.VALID_MESSAGE}
             };
             const res = mockResponse();
             const errorMessage = "Error message";
             const expectedRes = {
                 ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR,
-                message: errorMessage
+                [POST_MODEL_FIELDS.MESSAGE]: errorMessage
             };
 
             // Mock
@@ -97,7 +93,7 @@ describe("Post Controller", () => {
     describe("getPostById", () => {
         test("Returns 200 and post data", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const postData = "Post data";
             const expectedRes = {
@@ -118,7 +114,7 @@ describe("Post Controller", () => {
 
         test("Returns 404 if a post is not found", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND;
 
@@ -135,12 +131,12 @@ describe("Post Controller", () => {
 
         test("Returns 500 if an exception occurs", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const errorMessage = "Error message";
             const expectedRes = {
                 ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR, 
-                message: errorMessage
+                [POST_MODEL_FIELDS.MESSAGE]: errorMessage
             };
 
             // Mock
@@ -158,7 +154,7 @@ describe("Post Controller", () => {
     describe("deletePostById", () => {
         test("Returns 204 on successful post delete", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.SUCCESS.NO_CONTENT;
 
@@ -175,7 +171,7 @@ describe("Post Controller", () => {
 
         test("Returns 404 if post is not found", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const expectedRes = RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND;
 
@@ -192,12 +188,12 @@ describe("Post Controller", () => {
 
         test("Returns 500 if an exception occurs", async () => {
             // Var
-            const req = {params: {postId: mongoose.Types.ObjectId()}};
+            const req = {params: {[POST_ID]: mongoose.Types.ObjectId()}};
             const res = mockResponse();
             const errorMessage = "Error message";
             const expectedRes = {
                 ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR,
-                message: errorMessage
+                [POST_MODEL_FIELDS.MESSAGE]: errorMessage
             };
 
             // Mock

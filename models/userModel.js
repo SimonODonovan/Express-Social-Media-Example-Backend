@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 import { validate as validateEmail } from "isemail";
-import { USER_MODEL_NAME, VALIDATION_MESSAGES } from "../constants/userConstants.js";
+import { USER_MODEL_NAME, VALIDATION_MESSAGES, USER_MODEL_FIELDS } from "../constants/userConstants.js";
 import { emailInUse, handleInUse, validateHandleWhitespace } from "./validators/userModelValidators.js";
 
 const userSchema = new mongoose.Schema({
-    email: {
+    [USER_MODEL_FIELDS.EMAIL]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.EMAIL_REQUIRED],
         validate: [
             {
-                validator: (value) => validateEmail(value, {minDomainAtoms: 2}),
+                validator: (value) => validateEmail(value, { minDomainAtoms: 2 }),
                 msg: VALIDATION_MESSAGES.EMAIL_INVALID
             },
             {
@@ -19,17 +19,17 @@ const userSchema = new mongoose.Schema({
         ],
         unique: true
     },
-    password: {
+    [USER_MODEL_FIELDS.PASSWORD]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.PASSWORD_REQUIRED],
     },
-    username: {
+    [USER_MODEL_FIELDS.USERNAME]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.USERNAME_REQUIRED],
         minLength: [4, VALIDATION_MESSAGES.USERNAME_TOO_SHORT],
         maxLength: [50, VALIDATION_MESSAGES.USERNAME_TOO_LONG]
     },
-    handle: {
+    [USER_MODEL_FIELDS.HANDLE]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.HANDLE_REQUIRED],
         minLength: [4, VALIDATION_MESSAGES.HANDLE_TOO_SHORT],
@@ -46,13 +46,13 @@ const userSchema = new mongoose.Schema({
         ],
         unique: true
     },
-    bio: {
+    [USER_MODEL_FIELDS.BIO]: {
         type: String,
     },
-    location: {
+    [USER_MODEL_FIELDS.LOCATION]: {
         type: String,
     },
-    avatar: {
+    [USER_MODEL_FIELDS.AVATAR]: {
         type: String,
     }
 });

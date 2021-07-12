@@ -5,9 +5,9 @@ import Post from "../../../../models/postModel.js";
 import Like from "../../../../models/likeModel.js";
 import { TIMESTAMPS, MESSAGES } from "../../testConstants/postConstants.js";
 import { EMAILS, PASSWORDS, USERNAMES, HANDLES } from "../../testConstants/userConstants.js";
-import { POST_CONTENT_FIELDS, POST_ID } from "../../../../constants/postConstants.js";
-import { VALIDATION_MESSAGES } from "../../../../constants/likeConstants.js";
-import { USER_ID } from "../../../../constants/userConstants.js";
+import { POST_MODEL_FIELDS } from "../../../../constants/postConstants.js";
+import { VALIDATION_MESSAGES, LIKE_MODEL_FIELDS } from "../../../../constants/likeConstants.js";
+import { USER_MODEL_FIELDS } from "../../../../constants/userConstants.js";
 
 beforeAll(() => setup());
 afterEach(() => cleanupPostCollection());
@@ -22,17 +22,17 @@ let testPostId;
 const setup = async () => {
     await connectToMongoMemoryServer();
     const testUser = await User.create({
-        email: EMAILS.VALID_EMAIL,
-        password: PASSWORDS.VALID_PASSWORD,
-        username: USERNAMES.VALID_USERNAME_ALPHANUM,
-        handle: HANDLES.VALID_HANDLE
+        [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+        [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+        [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+        [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
     });
     testUserId = testUser._id;
 
     const testPost = await Post.create({
-        user: testUserId,
-        [POST_CONTENT_FIELDS.messageContent]: MESSAGES.VALID_MESSAGE,
-        timestamp: TIMESTAMPS.VALID_TIMESTAMP
+        [POST_MODEL_FIELDS.USER]: testUserId,
+        [POST_MODEL_FIELDS.MESSAGE]: MESSAGES.VALID_MESSAGE,
+        [POST_MODEL_FIELDS.TIMESTAMP]: TIMESTAMPS.VALID_TIMESTAMP
     });
     testPostId = testPost._id;
 };
@@ -60,27 +60,27 @@ describe("Like Model", () => {
     test("Create new like", async () => {
         // Var
         const validLike = {
-            [USER_ID]: testUserId,
-            [POST_ID]: testPostId,
+            [LIKE_MODEL_FIELDS.USER]: testUserId,
+            [LIKE_MODEL_FIELDS.POST]: testPostId,
         };
 
         // Test
         await Like.create(validLike);
-        const allLikes = await Like.find().populate(USER_ID).populate(POST_ID);
+        const allLikes = await Like.find().populate(LIKE_MODEL_FIELDS.USER).populate(LIKE_MODEL_FIELDS.POST);
         expect(allLikes.length).toEqual(1);
         const foundLike = allLikes[0];
-        expect(foundLike[USER_ID]._id).toEqual(testUserId);
-        expect(foundLike[USER_ID].email).toEqual(EMAILS.VALID_EMAIL);
-        expect(foundLike[POST_ID]._id).toEqual(testPostId);
-        expect(foundLike[POST_ID][POST_CONTENT_FIELDS.messageContent]).toEqual(MESSAGES.VALID_MESSAGE);
+        expect(foundLike[LIKE_MODEL_FIELDS.USER]._id).toEqual(testUserId);
+        expect(foundLike[LIKE_MODEL_FIELDS.USER].email).toEqual(EMAILS.VALID_EMAIL);
+        expect(foundLike[LIKE_MODEL_FIELDS.POST]._id).toEqual(testPostId);
+        expect(foundLike[LIKE_MODEL_FIELDS.POST][POST_MODEL_FIELDS.MESSAGE]).toEqual(MESSAGES.VALID_MESSAGE);
     });
 
     test("Fails with post that does not exist", async () => {
         // Var
         const unsavedPost = new Post();
         const invalidLike = {
-            [USER_ID]: testUserId,
-            [POST_ID]: unsavedPost._id,
+            [LIKE_MODEL_FIELDS.USER]: testUserId,
+            [LIKE_MODEL_FIELDS.POST]: unsavedPost._id,
         };
 
         // Test
@@ -93,8 +93,8 @@ describe("Like Model", () => {
         // Var
         const unsavedUser = new User();
         const invalidLike = {
-            [USER_ID]: unsavedUser._id,
-            [POST_ID]: testPostId
+            [LIKE_MODEL_FIELDS.USER]: unsavedUser._id,
+            [LIKE_MODEL_FIELDS.POST]: testPostId
         };
 
         // Test
@@ -106,7 +106,7 @@ describe("Like Model", () => {
     test("Fails to create if post id is empty", async () => {
         // Var
         const invalidLike = {
-            [USER_ID]: testUserId,
+            [LIKE_MODEL_FIELDS.USER]: testUserId,
         };
 
         // Test
@@ -118,7 +118,7 @@ describe("Like Model", () => {
     test("Fails to create if user id is empty", async () => {
         // Var
         const invalidLike = {
-            [POST_ID]: testPostId
+            [LIKE_MODEL_FIELDS.POST]: testPostId
         };
 
         // Test

@@ -11,7 +11,7 @@ import passport from "passport";
 import * as authController from "../../../../../controllers/authController.js";
 import { EMAILS, HANDLES, PASSWORDS, USERNAMES } from "../../../testConstants/userConstants.js";
 import bcrypt from "bcrypt";
-import { ERROR_MESSAGES } from "../../../../../constants/userConstants.js";
+import { ERROR_MESSAGES, USER_MODEL_FIELDS } from "../../../../../constants/userConstants.js";
 
 beforeAll(() => setup());
 afterEach(() => jest.restoreAllMocks());
@@ -54,10 +54,10 @@ describe("Auth Controller", () => {
 
         test("Returns 200 after user authenticated successfully", (done) => {
             // Var
-            const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
+            const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
             const req = {
-                email: EMAILS.VALID_EMAIL,
-                password: PASSWORDS.VALID_PASSWORD,
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
             };
             const expectedRes = RESPONSE_CODES.SUCCESS.OK;
 
@@ -83,8 +83,14 @@ describe("Auth Controller", () => {
 
         test("Returns 404 if no user found and no error occurred", (done) => {
             // Var
-            const req = { email: EMAILS.VALID_EMAIL, password: PASSWORDS.VALID_PASSWORD };
-            const expectedRes = { ...RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND, message: ERROR_MESSAGES.USER_NOT_FOUND };
+            const req = {
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD
+            };
+            const expectedRes = {
+                ...RESPONSE_CODES.CLIENT_ERROR.NOT_FOUND,
+                message: ERROR_MESSAGES.USER_NOT_FOUND
+            };
 
             // Mock
             User.findOne = jest.fn().mockReturnValue(false);
@@ -108,7 +114,10 @@ describe("Auth Controller", () => {
         test("Returns 500 and error on authentication exception", (done) => {
             // Var
             const errorMessage = "Error message";
-            const req = { email: EMAILS.VALID_EMAIL, password: PASSWORDS.VALID_PASSWORD };
+            const req = {
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD
+            };
             const expectedRes = RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR;
 
             // Mock
@@ -134,9 +143,14 @@ describe("Auth Controller", () => {
     describe("signup", () => {
         test("Returns 201 create success on successful signup", (done) => {
             // Var
-            const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
+            const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
             const expectedRes = { ...RESPONSE_CODES.SUCCESS.CREATED, message: "Created user successfully." };
-            const req = { email: EMAILS.VALID_EMAIL, password: PASSWORDS.VALID_PASSWORD, username: USERNAMES.VALID_USERNAME_ALPHANUM, handle: HANDLES.VALID_HANDLE };
+            const req = {
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+                [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+                [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
+            };
 
             // Mock
             const userCreateSpy = jest.spyOn(User, "create").mockImplementation().mockReturnValue(testUser);
@@ -166,7 +180,7 @@ describe("Auth Controller", () => {
             // Var
             const errorMessage = "Error message";
             const expectedRes = { ...RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR, message: errorMessage };
-            const req = { password: PASSWORDS.VALID_PASSWORD };
+            const req = { [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD };
 
             // Mock
             const bcryptHashSpy = jest.spyOn(bcrypt, "hash").mockRejectedValue(new Error(errorMessage));
@@ -191,8 +205,13 @@ describe("Auth Controller", () => {
 
         test("Performs at least 12 salt rounds on password", (done) => {
             // Var
-            const testUser = { username: USERNAMES.VALID_USERNAME_ALPHANUM };
-            const req = { email: EMAILS.VALID_EMAIL, password: PASSWORDS.VALID_PASSWORD, username: USERNAMES.VALID_USERNAME_ALPHANUM, handle: HANDLES.VALID_HANDLE };
+            const testUser = { [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM };
+            const req = {
+                [USER_MODEL_FIELDS.EMAIL]: EMAILS.VALID_EMAIL,
+                [USER_MODEL_FIELDS.PASSWORD]: PASSWORDS.VALID_PASSWORD,
+                [USER_MODEL_FIELDS.USERNAME]: USERNAMES.VALID_USERNAME_ALPHANUM,
+                [USER_MODEL_FIELDS.HANDLE]: HANDLES.VALID_HANDLE
+            };
 
             // Mock
             jest.spyOn(User, "create").mockImplementation().mockReturnValue(testUser);

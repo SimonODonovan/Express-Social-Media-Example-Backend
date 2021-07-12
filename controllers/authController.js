@@ -2,7 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import RESPONSE_CODES from "../constants/responseCodes.js";
 import passport from "passport";
-import { SUCCESS_MESSAGES } from "../constants/userConstants.js";
+import { SUCCESS_MESSAGES, USER_MODEL_FIELDS } from "../constants/userConstants.js";
 
 /**
  * Create a new session for given user.
@@ -29,7 +29,12 @@ const _initSession = (req, user, next) => {
  * @returns {Promise}       - Express response object.
  */
 const signup = async (req, res, next) => {
-    const { email, password, username, handle } = req.body;
+    const {
+        [USER_MODEL_FIELDS.EMAIL]: email,
+        [USER_MODEL_FIELDS.PASSWORD]: password,
+        [USER_MODEL_FIELDS.USERNAME]: username,
+        [USER_MODEL_FIELDS.HANDLE]: handle,
+    } = req.body;
     try {
         const hashpassword = await bcrypt.hash(password, 12);
         const newUser = await User.create({
