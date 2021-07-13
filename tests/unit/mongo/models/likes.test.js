@@ -1,4 +1,4 @@
-import { beforeAll, afterEach, afterAll, describe, test, expect, jest } from "@jest/globals";
+import { beforeAll, afterEach, afterAll, describe, test, expect } from "@jest/globals";
 import { connectToMongoMemoryServer, closeMemoryServerDatabase, clearMemoryServerDatabase } from "../server/memoryServer.js";
 import User from "../../../../models/userModel.js";
 import Post from "../../../../models/postModel.js";
@@ -53,8 +53,6 @@ const teardown = async () => {
     await clearMemoryServerDatabase();
     await closeMemoryServerDatabase();
 };
-
-jest.setTimeout(1000000);
 
 describe("Like Model", () => {
     test("Create new like", async () => {
