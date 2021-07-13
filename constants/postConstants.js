@@ -1,4 +1,4 @@
-import { USER_MODEL_NAME } from "./userConstants";
+import { USER_MODEL_NAME } from "./userConstants.js";
 
 // Declaration Conventions:
 //     - All declarations should use const.

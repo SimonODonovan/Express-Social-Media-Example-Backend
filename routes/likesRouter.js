@@ -28,21 +28,21 @@ const mw = {
     likeDoesntExist: (req, res, next) => hasNoMatchingDocument(req, res, next, LIKE_MODEL_NAME, hasNoMatchingDocumentFilter(req))
 };
 
-const likeRouter = express.Router();
+const likesRouter = express.Router();
 
-likeRouter
+likesRouter
     .use(isAuthenticated)
     .use(ROUTES.WITH_LIKE_ID, mw.hasLikeIdRouteParam, mw.isValidLikeId, mw.likeExists);
 
-likeRouter
+likesRouter
     .route(ROUTES.BASE)
     .get(mw.hasLikesFilter, likeController.getLikes)
     .post(mw.hasRequiredBodyParams, mw.likeDoesntExist, likeController.createLike);
 
-likeRouter
+likesRouter
     .route(ROUTES.WITH_LIKE_ID)
     .get(likeController.getLikeById)
     .delete(likeController.deleteLikeById);
 
-export default likeRouter;
+export default likesRouter;
 export { ROUTES };

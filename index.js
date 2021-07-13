@@ -5,6 +5,7 @@ import connectRedis from "connect-redis";
 import usersRouter from "./routes/usersRouter.js";
 import postsRouter from "./routes/postsRouter.js";
 import likesRouter from "./routes/likesRouter.js";
+import followingsRouter from "./routes/followingsRouter.js";
 import mongoose from "mongoose";
 import passport from "passport";
 import * as strategies from "./lib/passportStrategies/passportStrategies.js";
@@ -63,6 +64,7 @@ app.use(passport.session());
 app.use(API_ROUTES.USERS, usersRouter);
 app.use(API_ROUTES.POSTS, postsRouter);
 app.use(API_ROUTES.LIKES, likesRouter);
+app.use(API_ROUTES.FOLLOWINGS, followingsRouter);
 
 const port = process.env.EXPRESS_PORT;
 app.listen(port, () => {
