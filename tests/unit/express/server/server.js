@@ -4,7 +4,7 @@ import * as strategies from "../../../../lib/passportStrategies/passportStrategi
 
 let server;
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

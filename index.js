@@ -10,8 +10,11 @@ import mongoose from "mongoose";
 import passport from "passport";
 import * as strategies from "./lib/passportStrategies/passportStrategies.js";
 import { API_ROUTES } from "./constants/apiRoutes.js";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
 
 // Set body parsers
 app.use(express.json());
