@@ -10,14 +10,14 @@ services:
             - app-node-modules:/app/node_modules
         environment: 
             - NODE_ENV=development
-            - EXPRESS_PORT=3000
+            - EXPRESS_PORT=3001
             - MONGO_IP=mongo
             - MONGO_PORT=27017
             - MONGO_USER=dev
             - MONGO_PASSWORD=dev
             - REDIS_SESSION_SECRET=dev
         ports:
-            - 3000:3000
+            - 3001:3001
             - 9229:9229
         command: npm run dev
 
