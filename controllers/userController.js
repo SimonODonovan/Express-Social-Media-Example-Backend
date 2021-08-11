@@ -46,8 +46,9 @@ const checkHandle = async (req, res) => {
 
 /**
  * Endpoint for validating user is logged in.
- * Route for this endpoint will call isAuthenticated middleware,
- * if this endpoint is reached we can assume user is authenticated.
+ * Routes using this endpoint must call isAuthenticated middleware,
+ * if this endpoint is reached we can assume user has been authenticated
+ * by the express middleware and just need to return a valid response.
  * @param {Object} req      - Express request object 
  * @param {Object} res      - Express response object
  * @returns {Object}        - Express response object
