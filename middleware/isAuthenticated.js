@@ -10,7 +10,8 @@ import RESPONSE_CODES from "../constants/responseCodes.js";
  * @returns {Object}        - Express response object.
  */
 const isAuthenticated = (req, res, next) => {
-    if(req.isAuthenticated())
+    const isAuth = req.isAuthenticated();
+    if(isAuth)
         return next();
     const unauthorizedResponse = RESPONSE_CODES.CLIENT_ERROR.UNAUTHORIZED;
     return res.status(unauthorizedResponse.code).json(unauthorizedResponse);

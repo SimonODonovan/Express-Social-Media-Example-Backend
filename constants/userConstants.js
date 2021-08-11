@@ -32,6 +32,7 @@ export const VALIDATION_MESSAGES = {
     EMAIL_INVALID: "Invalid email format.",
     EMAIL_INUSE: "Email already in use.",
     PASSWORD_REQUIRED: "Password is required.",
+    PASSWORD_TOO_SHORT: "Password too short.",
     USERNAME_REQUIRED: "Username is required.",
     USERNAME_TOO_SHORT: "Username too short.",
     USERNAME_TOO_LONG: "Username too long.",

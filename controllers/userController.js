@@ -13,7 +13,7 @@ const checkEmail = async (req, res) => {
         const emailField = USER_MODEL_FIELDS.EMAIL;
         const successResponse = RESPONSE_CODES.SUCCESS.OK;
         const user = await User.findOne({ email: req.params[emailField] }, `${emailField} -_id`);
-        return res.status(successResponse.code).json({ ...successResponse, data: user });
+        return res.status(successResponse.code).json({ ...successResponse, email: user });
     } catch (err) {
         const errorResponse = RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR;
         return res.status(errorResponse.code).json({
@@ -23,4 +23,38 @@ const checkEmail = async (req, res) => {
     }
 };
 
-export { checkEmail };
+/**
+ * Check if a supplied handle is already in use by any User. 
+ * @param {Object} req      - Express request object.
+ * @param {Object} user     - Mongo User document.
+ * @returns {Promise}       - Express response object.
+ */
+const checkHandle = async (req, res) => {
+    try {
+        const handleField = USER_MODEL_FIELDS.HANDLE;
+        const successResponse = RESPONSE_CODES.SUCCESS.OK;
+        const user = await User.findOne({ handle: req.params[handleField] }, `${handleField} -_id`);
+        return res.status(successResponse.code).json({ ...successResponse, handle: user });
+    } catch (err) {
+        const errorResponse = RESPONSE_CODES.SERVER_ERROR.INTERNAL_ERROR;
+        return res.status(errorResponse.code).json({
+            ...errorResponse,
+            message: err.message
+        });
+    }
+};
+
+/**
+ * Endpoint for validating user is logged in.
+ * Route for this endpoint will call isAuthenticated middleware,
+ * if this endpoint is reached we can assume user is authenticated.
+ * @param {Object} req      - Express request object 
+ * @param {Object} res      - Express response object
+ * @returns {Object}        - Express response object
+ */
+const isAuthenticated = (req, res) => {
+    const successResponse = RESPONSE_CODES.SUCCESS.OK;
+    return res.status(successResponse.code).json(successResponse);
+};
+
+export { checkEmail, checkHandle, isAuthenticated };

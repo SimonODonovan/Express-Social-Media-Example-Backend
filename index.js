@@ -14,11 +14,20 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: ["http://localhost:3000", "http://192.168.1.2:3000"],
+    credentials: true
+};
+
+const corsInstance = cors(corsOptions);
+
+app.options("*", corsInstance); // enable cors pre-flight checks
+
+app.use(corsInstance);
+
 
 // Set body parsers
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Connect to mongo
 const connectWithRetry = () => {
@@ -51,7 +60,7 @@ app.use(session({
     cookie: {
         secure: false, //todo set true
         httpOnly: false, //todo set true
-        maxAge: 60000000
+        maxAge: 60000000,
     }
 }));
 

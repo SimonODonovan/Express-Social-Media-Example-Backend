@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     [USER_MODEL_FIELDS.PASSWORD]: {
         type: String,
         required: [true, VALIDATION_MESSAGES.PASSWORD_REQUIRED],
+        minLength: [8, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT],
     },
     [USER_MODEL_FIELDS.USERNAME]: {
         type: String,
