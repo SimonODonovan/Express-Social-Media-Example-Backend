@@ -14,7 +14,7 @@ const ROUTES = {
     WITH_LIKE_ID: `/:${LIKE_ID}`,
 };
 
-// Define Link route middleware params.
+// Define Likes route middleware params.
 const hasNoMatchingDocumentFilter = (req) => ({
     [LIKE_MODEL_FIELDS.POST]: req.body[LIKE_MODEL_FIELDS.POST],
     [LIKE_MODEL_FIELDS.USER]: req.body[LIKE_MODEL_FIELDS.USER]
