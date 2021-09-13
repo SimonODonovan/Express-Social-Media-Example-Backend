@@ -14,7 +14,7 @@ const ROUTES = {
     WITH_FOLLOWING_ID: `/:${FOLLOWING_ID}`,
 };
 
-// Define Link route middleware params.
+// Define Followings route middleware params.
 const hasNoMatchingDocumentFilter = (req) => ({
     [FOLLOWING_MODEL_FIELDS.FOLLOWER]: req.body[FOLLOWING_MODEL_FIELDS.FOLLOWER],
     [FOLLOWING_MODEL_FIELDS.FOLLOWING]: req.body[FOLLOWING_MODEL_FIELDS.FOLLOWING]
